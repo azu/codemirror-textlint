@@ -1,0 +1,46 @@
+{
+  "name": "codemirror-textlint",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azu/codemirror-textlint.git"
+  },
+  "author": "azu",
+  "email": "azuciao@gmail.com",
+  "homepage": "https://github.com/azu/codemirror-textlint",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/azu/codemirror-textlint/issues"
+  },
+  "version": "1.0.0",
+  "description": "CodeMirror with textlint.",
+  "main": "lib/codemirror-textlint.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "babel src --out-dir lib --source-maps",
+    "watch": "babel src --out-dir lib --watch --source-maps",
+    "prepublish": "npm run --if-present build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "textlint",
+    "codemirror"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-plugin-add-module-exports": "^0.1.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "codemirror": "^5.9.0",
+    "watchify": "^3.6.1"
+  },
+  "dependencies": {
+    "textlint": "^5.0.3"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify app.js -o build.js"
+  },
+  "author": "azu",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror-textlint": "file:///Users/azu/.ghq/github.com/azu/codemirror-textlint",
+    "textlint-rule-no-todo": "^1.0.3"
+  }
+}
