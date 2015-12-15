@@ -11,7 +11,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code-md"), {
     lineNumbers: true,
     mode: "markdown",
     gutters: ["CodeMirror-lint-markers"],
-    lintWith: {
+    lint: {
         "getAnnotations": validator,
         "async": true
     }

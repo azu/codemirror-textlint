@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepublish": "npm rm codemirror-textlint && npm run build",
     "build": "browserify app.js -o build.js"
   },
   "author": "azu",
   "license": "MIT",
   "dependencies": {
-    "codemirror-textlint": "file:///Users/azu/.ghq/github.com/azu/codemirror-textlint",
+    "codemirror-textlint": "file:..",
     "textlint-rule-no-todo": "^1.0.3"
   }
 }
