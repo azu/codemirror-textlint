@@ -25,7 +25,9 @@ export default function createValidator(options = {}) {
         textlint.lintMarkdown(text).then(result => {
             const results = [];
             result.messages.forEach(message => {
-                const pos = {line: message.line - 1, ch: message.column};
+                // https://codemirror.net/doc/manual.html
+                // the API uses objects with line and ch properties. Both are zero-based.
+                const pos = {line: message.line - 1, ch: message.column - 1};
                 results.push({
                     from: pos,
                     to: pos,
