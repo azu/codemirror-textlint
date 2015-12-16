@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm rm codemirror-textlint && npm run build",
     "build": "browserify app.js -o build.js"
   },
-  "author": "azu",
+  "auth,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,or": "azu",
   "license": "MIT",
   "dependencies": {
     "codemirror-textlint": "file:../",

@@ -27,10 +27,11 @@ export default function createValidator(options = {}) {
             result.messages.forEach(message => {
                 // https://codemirror.net/doc/manual.html
                 // the API uses objects with line and ch properties. Both are zero-based.
-                const pos = {line: message.line - 1, ch: message.column - 1};
+                const posFrom = {line: message.line - 1, ch: message.column - 1};
+                const posTo = {line: message.line - 1, ch: message.column};
                 results.push({
-                    from: pos,
-                    to: pos,
+                    from: posFrom,
+                    to: posTo,
                     message: message.message,
                     severity: convertSeverity(message.severity)
                 });
