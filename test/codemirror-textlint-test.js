@@ -21,7 +21,7 @@ describe("codemirror-textlint", function () {
             assert.equal(results.length, 1);
             var result = results[0];
             assert.equal(result.message, "message");
-            assert.deepEqual(result.from, {line: 0, ch: 1});
+            assert.deepEqual(result.from, {line: 0, ch: 0});
             done();
         });
     });
