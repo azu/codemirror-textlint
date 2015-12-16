@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/azu/codemirror-textlint/issues"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CodeMirror with textlint.",
   "main": "lib/codemirror-textlint.js",
   "files": [
