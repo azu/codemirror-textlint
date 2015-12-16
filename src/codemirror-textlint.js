@@ -1,7 +1,7 @@
 // LICENSE : MIT
 "use strict";
 import {TextLintCore} from "textlint";
-export default function textlintValidator(options = {}) {
+export default function createValidator(options = {}) {
     const textlint = new TextLintCore();
     const rules = options.rules || {};
     const rulesConfig = options.rulesConfig || {};
@@ -21,13 +21,14 @@ export default function textlintValidator(options = {}) {
         }
     }
 
-    return (text, updateLinting) => {
+    return function textlintValidator(text, updateLinting) {
         textlint.lintMarkdown(text).then(result => {
             const results = [];
             result.messages.forEach(message => {
+                const pos = {line: message.line - 1, ch: message.column};
                 results.push({
-                    from: CodeMirror.Pos(message.line - 1, message.column),
-                    to: CodeMirror.Pos(message.line - 1, message.column),
+                    from: pos,
+                    to: pos,
                     message: message.message,
                     severity: convertSeverity(message.severity)
                 });

@@ -10,7 +10,7 @@
   "author": "azu",
   "license": "MIT",
   "dependencies": {
-    "codemirror-textlint": "file:..",
+    "codemirror-textlint": "file:../",
     "textlint-rule-no-todo": "^1.0.3"
   }
 }
