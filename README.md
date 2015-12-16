@@ -9,10 +9,10 @@ CodeMirror plugin for [textlint](https://github.com/textlint/textlint "textlint"
 ## Usage
 
 ```js
-var textlintValidator = require("codemirror-textlint");
-// textlint rule
+var createValidator = require("codemirror-textlint");
+// rule
 var noTodo = require("textlint-rule-no-todo");
-var validator = textlintValidator({
+var validator = createValidator({
     rules: {
         "no-todo": noTodo
     }
@@ -26,6 +26,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code-md"), {
         "async": true
     }
 });
+
 ```
 
 ## Tests

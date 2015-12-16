@@ -1,8 +1,8 @@
 // LICENSE : MIT
 "use strict";
-var textlintValidator = require("codemirror-textlint");
+var createValidator = require("codemirror-textlint");
 var noTodo = require("textlint-rule-no-todo");
-var validator = textlintValidator({
+var validator = createValidator({
     rules: {
         "no-todo": noTodo
     }
