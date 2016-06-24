@@ -44,6 +44,6 @@
     "watchify": "^3.6.1"
   },
   "dependencies": {
-    "textlint": "^6.10.0"
+    "textlint": "^7.0.0"
   }
 }
