@@ -39,7 +39,7 @@
     "browserify": "^13.0.1",
     "codemirror": "^5.9.0",
     "espower-babel": "^4.0.0",
-    "mocha": "^3.0.1",
+    "mocha": "^3.4.0",
     "power-assert": "^1.2.0",
     "watchify": "^3.6.1"
   },
