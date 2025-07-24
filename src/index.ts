@@ -1,7 +1,7 @@
 import { linter, Diagnostic } from "@codemirror/lint";
 import * as textlintKernel from "@textlint/kernel";
 import type { TextlintKernelRule, TextlintKernelFilterRule, TextlintKernelPlugin } from "@textlint/kernel";
-import type { TextlintRuleModule, TextlintFilterRuleReporter, TextlintPluginCreator, TextlintMessage } from "@textlint/types";
+import type { TextlintRuleModule, TextlintFilterRuleReporter, TextlintPluginCreator, TextlintMessage, TextlintRuleSeverityLevel } from "@textlint/types";
 
 const { TextlintKernel } = textlintKernel;
 
@@ -14,8 +14,10 @@ export interface TextlintLinterOptions {
   filterRulesConfig?: Record<string, any>;
 }
 
-function convertSeverity(severity: number): "error" | "warning" | "info" {
+function convertSeverity(severity: TextlintRuleSeverityLevel): "error" | "warning" | "info" {
   switch (severity) {
+    case 0: // none - typically not shown but treat as info
+      return "info";
     case 1:
       return "warning";
     case 2:
