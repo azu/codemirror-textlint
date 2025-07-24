@@ -2,6 +2,8 @@
 
 CodeMirror 6 linter extension for [textlint](https://github.com/textlint/textlint "textlint") using [@textlint/kernel](https://www.npmjs.com/package/@textlint/kernel).
 
+> **⚠️ Migrating from v1.x?** See the [**Migration Guide**](./MIGRATION.md) for breaking changes and upgrade instructions.
+
 ## Installation
 
 ```bash
@@ -127,133 +129,9 @@ This will start a Vite development server at http://localhost:3000 with the exam
 npm run build
 ```
 
-## Migration Guide
+## Migration from v1.x
 
-### Migrating from 1.x to 2.x
-
-Version 2.0 introduces breaking changes due to the migration from CodeMirror 5 to CodeMirror 6 and from textlint v8 to @textlint/kernel v15.
-
-#### Major Changes
-
-1. **CodeMirror 6 Migration**: Now uses CodeMirror 6's extension system
-2. **@textlint/kernel v15**: Migrated from legacy textlint API to modern @textlint/kernel
-3. **Pure ESM**: Package is now pure ESM (no CommonJS support)
-4. **TypeScript**: Full TypeScript support with type definitions
-5. **Vite Development**: Uses Vite for development and building
-
-#### Breaking Changes
-
-##### CodeMirror API Changes
-
-**Before (v1.x with CodeMirror 5):**
-```javascript
-const CodeMirror = require('codemirror');
-const textlintCodeMirror = require('codemirror-textlint');
-
-const editor = CodeMirror.fromTextArea(textarea, {
-  mode: 'markdown',
-  lint: {
-    getAnnotations: textlintCodeMirror({
-      rules: {
-        'no-todo': require('textlint-rule-no-todo')
-      }
-    })
-  }
-});
-```
-
-**After (v2.x with CodeMirror 6):**
-```typescript
-import { EditorView, basicSetup } from "codemirror";
-import { markdown } from "@codemirror/lang-markdown";
-import { lintGutter } from "@codemirror/lint";
-import { createTextlintLinter } from "codemirror-textlint";
-import noTodo from "textlint-rule-no-todo";
-
-const textlintLinter = createTextlintLinter({
-  rules: {
-    "no-todo": noTodo
-  },
-  rulesConfig: {
-    "no-todo": true
-  }
-});
-
-const editor = new EditorView({
-  extensions: [
-    basicSetup,
-    markdown(),
-    lintGutter(),
-    textlintLinter
-  ],
-  parent: document.getElementById("editor")
-});
-```
-
-##### Module System
-
-**Before (CommonJS):**
-```javascript
-const textlintCodeMirror = require('codemirror-textlint');
-```
-
-**After (ESM):**
-```typescript
-import { createTextlintLinter } from "codemirror-textlint";
-```
-
-##### Configuration Changes
-
-**Before (v1.x):**
-```javascript
-textlintCodeMirror({
-  rules: {
-    'no-todo': require('textlint-rule-no-todo')
-  }
-})
-```
-
-**After (v2.x):**
-```typescript
-createTextlintLinter({
-  rules: {
-    "no-todo": noTodo
-  },
-  rulesConfig: {
-    "no-todo": true
-  }
-})
-```
-
-#### Migration Steps
-
-1. **Update Dependencies**:
-   ```bash
-   npm uninstall codemirror@5
-   npm install codemirror@6 codemirror-textlint@2
-   ```
-
-2. **Update Package Type**: If using in a Node.js project, update your `package.json`:
-   ```json
-   {
-     "type": "module"
-   }
-   ```
-
-3. **Update Imports**: Change from CommonJS require to ESM imports
-
-4. **Update CodeMirror Setup**: Follow the CodeMirror 6 migration guide and use the new extension system
-
-5. **Update Configuration**: Use the new `createTextlintLinter` API with separate `rules` and `rulesConfig`
-
-#### New Features in v2.x
-
-- **TypeScript Support**: Full type definitions included
-- **Modern textlint**: Uses @textlint/kernel v15 for better performance
-- **Vite Development**: Fast development server with HMR
-- **GitHub Pages**: Automatic deployment of examples
-- **Vitest**: Modern testing framework
-- **Pure ESM**: Better tree-shaking and modern module support
+Version 2.0 includes breaking changes. See [**MIGRATION.md**](./MIGRATION.md) for detailed upgrade instructions.
 
 ## Contributing
 
