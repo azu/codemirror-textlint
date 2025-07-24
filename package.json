@@ -34,7 +34,7 @@
     "watch": "tsup --watch",
     "type-check": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "test": "vitest",
+    "test": "vitest run",
     "dev": "vite",
     "build:example": "npm run build && NODE_ENV=production vite build"
   },
