@@ -1,4 +1,4 @@
-name: Deploy Example to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
@@ -45,17 +45,17 @@ jobs:
       run: npm run build:example
       
     - name: Setup Pages
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d # v4.0.0
       
     - name: Upload artifact
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
       with:
         path: './dist-example'
 
   deploy:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
