@@ -20,6 +20,8 @@ function convertSeverity(severity: number): "error" | "warning" | "info" {
       return "warning";
     case 2:
       return "error";
+    case 3:
+      return "info";
     default:
       return "error";
   }
