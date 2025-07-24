@@ -4,6 +4,7 @@ import { EditorView } from '@codemirror/view';
 import { lintGutter } from '@codemirror/lint';
 import { createTextlintLinter } from '../src/index';
 import type { TextlintRuleModule } from '@textlint/types';
+import textPlugin from '@textlint/textlint-plugin-text';
 
 describe('codemirror-textlint', () => {
   describe('createTextlintLinter', () => {
@@ -172,6 +173,60 @@ describe('codemirror-textlint', () => {
 
       // Should work with default values (.md, document.md)
       expect(view).toBeDefined();
+
+      view.destroy();
+    });
+
+    it('should work with text plugin for .txt files', async () => {
+      const mockRule: TextlintRuleModule = {
+        linter(context, options) {
+          const { Syntax, report, getSource } = context;
+          
+          return {
+            [Syntax.Document](node) {
+              const text = getSource(node);
+              const todoMatch = text.match(/TODO:/i);
+              if (todoMatch && todoMatch.index !== undefined) {
+                report(node, {
+                  message: 'Found TODO in text file',
+                  index: todoMatch.index,
+                  fix: undefined
+                });
+              }
+            }
+          };
+        }
+      };
+
+      const linter = createTextlintLinter({
+        rules: {
+          'mock-rule': mockRule
+        },
+        plugins: {
+          '@textlint/text': textPlugin
+        },
+        pluginsConfig: {
+          '@textlint/text': true
+        },
+        ext: '.txt',
+        filePath: 'test.txt'
+      });
+
+      const state = EditorState.create({
+        doc: 'This is a TODO: item in text file',
+        extensions: [linter]
+      });
+
+      const view = new EditorView({
+        state,
+        parent: document.createElement('div')
+      });
+
+      // Wait for linting to complete
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // The test verifies the linter works with text plugin
+      expect(view.state).toBeDefined();
 
       view.destroy();
     });

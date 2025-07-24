@@ -114,11 +114,16 @@ const textlintLinter = createTextlintLinter({
 
 ### Plain Text (Non-Markdown)
 
-For plain text files without markdown syntax, you can specify a different file extension:
+For plain text files without markdown syntax, you need the text plugin:
+
+```bash
+npm install @textlint/textlint-plugin-text
+```
 
 ```typescript
 import { createTextlintLinter } from "codemirror-textlint";
 import noTodo from "textlint-rule-no-todo";
+import textPlugin from "@textlint/textlint-plugin-text";
 
 const textlintLinter = createTextlintLinter({
   rules: {
@@ -127,9 +132,14 @@ const textlintLinter = createTextlintLinter({
   rulesConfig: {
     "no-todo": true
   },
+  plugins: {
+    "@textlint/text": textPlugin
+  },
+  pluginsConfig: {
+    "@textlint/text": true
+  },
   ext: ".txt",
   filePath: "document.txt"
-  // Note: No plugins needed for plain text
 });
 ```
 

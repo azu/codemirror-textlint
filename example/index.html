@@ -47,9 +47,10 @@
         import { lintGutter, linter } from "@codemirror/lint";
         import { createTextlintLinter } from "../src/index.ts";
 
-        // Import actual textlint rule and markdown plugin
+        // Import actual textlint rule and plugins
         import noTodoRule from "textlint-rule-no-todo";
         import markdownPlugin from "@textlint/textlint-plugin-markdown";
+        import textPlugin from "@textlint/textlint-plugin-text";
 
         // Markdown linter with plugin
         const markdownLinter = createTextlintLinter({
@@ -69,13 +70,19 @@
             filePath: "document.md"
         });
 
-        // Plain text linter without plugins
+        // Plain text linter with text plugin
         const textLinter = createTextlintLinter({
             rules: {
                 "no-todo": noTodoRule
             },
             rulesConfig: {
                 "no-todo": true
+            },
+            plugins: {
+                "@textlint/text": textPlugin
+            },
+            pluginsConfig: {
+                "@textlint/text": true
             },
             ext: ".txt",
             filePath: "document.txt"
