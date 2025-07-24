@@ -20,12 +20,17 @@ npm install codemirror
 
 ### Basic Usage
 
+```bash
+npm install @textlint/textlint-plugin-markdown textlint-rule-no-todo
+```
+
 ```typescript
 import { EditorView, basicSetup } from "codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { lintGutter } from "@codemirror/lint";
 import { createTextlintLinter } from "codemirror-textlint";
 import noTodo from "textlint-rule-no-todo";
+import markdownPlugin from "@textlint/textlint-plugin-markdown";
 
 const textlintLinter = createTextlintLinter({
   rules: {
@@ -33,6 +38,12 @@ const textlintLinter = createTextlintLinter({
   },
   rulesConfig: {
     "no-todo": true
+  },
+  plugins: {
+    "@textlint/markdown": markdownPlugin
+  },
+  pluginsConfig: {
+    "@textlint/markdown": true
   }
 });
 
@@ -72,21 +83,31 @@ const textlintLinter = createTextlintLinter({
 });
 ```
 
-### With Plugins
+### With Plugins (Required for Markdown)
+
+For markdown content, you need to include the markdown plugin:
+
+```bash
+npm install @textlint/textlint-plugin-markdown
+```
 
 ```typescript
 import { createTextlintLinter } from "codemirror-textlint";
 import markdownPlugin from "@textlint/textlint-plugin-markdown";
+import noTodo from "textlint-rule-no-todo";
 
 const textlintLinter = createTextlintLinter({
   rules: {
-    // your rules
+    "no-todo": noTodo
+  },
+  rulesConfig: {
+    "no-todo": true
   },
   plugins: {
-    "markdown": markdownPlugin
+    "@textlint/markdown": markdownPlugin
   },
   pluginsConfig: {
-    "markdown": true
+    "@textlint/markdown": true
   }
 });
 ```

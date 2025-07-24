@@ -40,8 +40,9 @@
         import { lintGutter, linter } from "@codemirror/lint";
         import { createTextlintLinter } from "../src/index.ts";
 
-        // Import actual textlint rule
+        // Import actual textlint rule and markdown plugin
         import noTodoRule from "textlint-rule-no-todo";
+        import markdownPlugin from "@textlint/textlint-plugin-markdown";
 
         const textlintLinter = createTextlintLinter({
             rules: {
@@ -49,6 +50,12 @@
             },
             rulesConfig: {
                 "no-todo": true
+            },
+            plugins: {
+                "@textlint/markdown": markdownPlugin
+            },
+            pluginsConfig: {
+                "@textlint/markdown": true
             }
         });
 
