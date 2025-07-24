@@ -12,39 +12,55 @@
     "url": "https://github.com/azu/codemirror-textlint/issues"
   },
   "version": "1.2.0",
-  "description": "CodeMirror with textlint.",
-  "main": "lib/codemirror-textlint.js",
+  "description": "CodeMirror 6 plugin for textlint.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "files": [
-    "lib",
+    "dist",
     "src"
   ],
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "babel src --out-dir lib --source-maps",
-    "watch": "babel src --out-dir lib --watch --source-maps",
-    "prepublish": "npm run --if-present build",
-    "test": "mocha"
+    "build": "tsup",
+    "watch": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "dev": "vite",
+    "build:example": "npm run build && NODE_ENV=production vite build"
   },
   "keywords": [
     "textlint",
     "codemirror"
   ],
   "devDependencies": {
-    "babel-cli": "^6.3.17",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.3.13",
-    "babelify": "^7.2.0",
-    "browserify": "^13.0.1",
-    "codemirror": "^5.9.0",
-    "espower-babel": "^4.0.0",
-    "mocha": "^3.0.1",
-    "power-assert": "^1.2.0",
-    "watchify": "^3.6.1"
+    "@types/node": "^20.0.0",
+    "codemirror": "^6.0.0",
+    "@codemirror/lang-markdown": "^6.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^6.0.0",
+    "vitest": "^3.2.0",
+    "jsdom": "^25.0.0",
+    "textlint-rule-no-todo": "^2.0.0"
+  },
+  "peerDependencies": {
+    "codemirror": "^6.0.0"
   },
   "dependencies": {
-    "textlint": "^8.0.0"
+    "@codemirror/lint": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "@textlint/kernel": "^15.0.0",
+    "@textlint/types": "^15.0.0"
   },
   "packageManager": "npm@10.9.2+sha512.8ab88f10f224a0c614cb717a7f7c30499014f77134120e9c1f0211ea3cf3397592cbe483feb38e0c4b3be1c54e347292c76a1b5edb94a3289d5448484ab8ac81"
 }

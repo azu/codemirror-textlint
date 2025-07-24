@@ -2,14 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CodeMirror</title>
-    <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css">
-    <link rel="stylesheet" href="../node_modules/codemirror/addon/lint/lint.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMirror 6 with Textlint Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .editor {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+        .cm-editor {
+            height: 100%;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-<textarea id="code-md">
+    <h1>CodeMirror 6 with Textlint</h1>
+    <p>This example demonstrates CodeMirror 6 integration with textlint using @textlint/kernel.</p>
+    <p>Try typing "TODO:" in the editor below to see textlint in action!</p>
+    
+    <div id="editor" class="editor"></div>
 
-</textarea>
-<script src="build.js"></script>
+    <script type="module">
+        import { EditorView, basicSetup } from "codemirror";
+        import { markdown } from "@codemirror/lang-markdown";
+        import { lintGutter, linter } from "@codemirror/lint";
+        import { createTextlintLinter } from "../src/index.ts";
+
+        // Import actual textlint rule
+        import noTodoRule from "textlint-rule-no-todo";
+
+        const textlintLinter = createTextlintLinter({
+            rules: {
+                "no-todo": noTodoRule
+            },
+            rulesConfig: {
+                "no-todo": true
+            }
+        });
+
+        const editor = new EditorView({
+            doc: `# Welcome to CodeMirror 6 with Textlint!
+
+This is a markdown document with textlint integration.
+
+Try typing "TODO:" somewhere in this document to see the linter in action.
+
+## Features
+
+- Real-time linting with textlint
+- CodeMirror 6 integration  
+- Support for custom rules
+- TypeScript support
+
+## Example
+
+Here's some sample text. Add a TODO: comment to see it highlighted!
+`,
+            extensions: [
+                basicSetup,
+                markdown(),
+                lintGutter(),
+                textlintLinter
+            ],
+            parent: document.getElementById("editor")
+        });
+    </script>
 </body>
 </html>

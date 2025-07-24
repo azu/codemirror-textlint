@@ -1,37 +1,137 @@
 # codemirror-textlint
 
-CodeMirror plugin for [textlint](https://github.com/textlint/textlint "textlint").
+CodeMirror 6 linter extension for [textlint](https://github.com/textlint/textlint "textlint") using [@textlint/kernel](https://www.npmjs.com/package/@textlint/kernel).
+
+> **⚠️ Migrating from v1.x?** See the [**Migration Guide**](./MIGRATION.md) for breaking changes and upgrade instructions.
 
 ## Installation
 
-    npm install codemirror-textlint
+```bash
+npm install codemirror-textlint
+```
+
+Note: This package requires CodeMirror 6 as a peer dependency:
+
+```bash
+npm install codemirror
+```
 
 ## Usage
 
-```js
-var CodeMirror = require("codemirror");
-require("./node_modules/codemirror/mode/markdown/markdown.js");
-require("./node_modules/codemirror/addon/lint/lint.js");
-var createValidator = require("codemirror-textlint");
-var noTodo = require("textlint-rule-no-todo");
-var validator = createValidator({
-    rules: {
-        "no-todo": noTodo
-    }
+### Basic Usage
+
+```typescript
+import { EditorView, basicSetup } from "codemirror";
+import { markdown } from "@codemirror/lang-markdown";
+import { lintGutter } from "@codemirror/lint";
+import { createTextlintLinter } from "codemirror-textlint";
+import noTodo from "textlint-rule-no-todo";
+
+const textlintLinter = createTextlintLinter({
+  rules: {
+    "no-todo": noTodo
+  },
+  rulesConfig: {
+    "no-todo": true
+  }
 });
-var editor = CodeMirror.fromTextArea(document.getElementById("code-md"), {
-    lineNumbers: true,
-    mode: "markdown",
-    gutters: ["CodeMirror-lint-markers"],
-    lint: {
-        "getAnnotations": validator,
-        "async": true
-    }
+
+const editor = new EditorView({
+  doc: "This is a TODO: item in markdown",
+  extensions: [
+    basicSetup,
+    markdown(),
+    lintGutter(),
+    textlintLinter
+  ],
+  parent: document.getElementById("editor")
 });
 ```
-## Tests
 
-    npm test
+### Advanced Configuration
+
+```typescript
+import { createTextlintLinter } from "codemirror-textlint";
+import noTodo from "textlint-rule-no-todo";
+import noExclamationQuestionMark from "textlint-rule-no-exclamation-question-mark";
+
+const textlintLinter = createTextlintLinter({
+  rules: {
+    "no-todo": noTodo,
+    "no-exclamation-question-mark": noExclamationQuestionMark
+  },
+  rulesConfig: {
+    "no-todo": true,
+    "no-exclamation-question-mark": {
+      "allowHalfWidthExclamation": true,
+      "allowFullWidthExclamation": false,
+      "allowHalfWidthQuestion": true,
+      "allowFullWidthQuestion": false
+    }
+  }
+});
+```
+
+### With Plugins
+
+```typescript
+import { createTextlintLinter } from "codemirror-textlint";
+import markdownPlugin from "@textlint/textlint-plugin-markdown";
+
+const textlintLinter = createTextlintLinter({
+  rules: {
+    // your rules
+  },
+  plugins: {
+    "markdown": markdownPlugin
+  },
+  pluginsConfig: {
+    "markdown": true
+  }
+});
+```
+
+## API
+
+### `createTextlintLinter(options?: TextlintLinterOptions)`
+
+Creates a CodeMirror 6 linter extension for textlint.
+
+#### Options
+
+- `rules?: Record<string, TextlintRuleModule>` - Textlint rules to use
+- `rulesConfig?: Record<string, any>` - Configuration for each rule  
+- `plugins?: Record<string, TextlintPluginCreator>` - Textlint plugins for different file formats
+- `pluginsConfig?: Record<string, any>` - Configuration for plugins
+- `filterRules?: Record<string, TextlintFilterRuleReporter>` - Filter rules to suppress certain messages
+- `filterRulesConfig?: Record<string, any>` - Configuration for filter rules
+
+Returns a linter extension that can be added to CodeMirror 6's extensions array.
+## Development
+
+### Running Tests
+
+```bash
+npm test
+```
+
+### Development Server
+
+```bash
+npm run dev
+```
+
+This will start a Vite development server at http://localhost:3000 with the example.
+
+### Building
+
+```bash
+npm run build
+```
+
+## Migration from v1.x
+
+Version 2.0 includes breaking changes. See [**MIGRATION.md**](./MIGRATION.md) for detailed upgrade instructions.
 
 ## Contributing
 
