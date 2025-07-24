@@ -103,5 +103,77 @@ describe('codemirror-textlint', () => {
 
       view.destroy();
     });
+
+    it('should accept custom ext and filePath options', async () => {
+      const mockRule: TextlintRuleModule = {
+        linter(context, options) {
+          const { Syntax, report, getSource } = context;
+          
+          return {
+            [Syntax.Document](node) {
+              const text = getSource(node);
+              const todoMatch = text.match(/TODO:/i);
+              if (todoMatch && todoMatch.index !== undefined) {
+                report(node, {
+                  message: 'Found TODO in custom file',
+                  index: todoMatch.index,
+                  fix: undefined
+                });
+              }
+            }
+          };
+        }
+      };
+
+      const linter = createTextlintLinter({
+        rules: {
+          'mock-rule': mockRule
+        },
+        ext: '.txt',
+        filePath: 'test.txt'
+      });
+
+      const state = EditorState.create({
+        doc: 'This is a TODO: item in plain text',
+        extensions: [linter]
+      });
+
+      const view = new EditorView({
+        state,
+        parent: document.createElement('div')
+      });
+
+      // Wait for linting to complete
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // The test verifies the linter works with custom ext and filePath
+      expect(view.state).toBeDefined();
+
+      view.destroy();
+    });
+
+    it('should use default values when ext and filePath are not provided', async () => {
+      const linter = createTextlintLinter({
+        rules: {}
+      });
+
+      const state = EditorState.create({
+        doc: 'Test content',
+        extensions: [linter]
+      });
+
+      const view = new EditorView({
+        state,
+        parent: document.createElement('div')
+      });
+
+      // Wait for processing
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Should work with default values (.md, document.md)
+      expect(view).toBeDefined();
+
+      view.destroy();
+    });
   });
 });

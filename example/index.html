@@ -13,7 +13,8 @@
         }
         .editor {
             border: 1px solid #ccc;
-            height: 400px;
+            height: 300px;
+            margin-bottom: 20px;
         }
         .cm-editor {
             height: 100%;
@@ -30,9 +31,15 @@
 <body>
     <h1>CodeMirror 6 with Textlint</h1>
     <p>This example demonstrates CodeMirror 6 integration with textlint using @textlint/kernel.</p>
-    <p>Try typing "TODO:" in the editor below to see textlint in action!</p>
+    <p>Try typing "TODO:" in the editors below to see textlint in action!</p>
     
-    <div id="editor" class="editor"></div>
+    <h2>Markdown Editor</h2>
+    <p>This editor uses the markdown plugin for .md files:</p>
+    <div id="markdown-editor" class="editor"></div>
+    
+    <h2>Plain Text Editor</h2>
+    <p>This editor processes content as plain text (.txt):</p>
+    <div id="text-editor" class="editor"></div>
 
     <script type="module">
         import { EditorView, basicSetup } from "codemirror";
@@ -44,7 +51,8 @@
         import noTodoRule from "textlint-rule-no-todo";
         import markdownPlugin from "@textlint/textlint-plugin-markdown";
 
-        const textlintLinter = createTextlintLinter({
+        // Markdown linter with plugin
+        const markdownLinter = createTextlintLinter({
             rules: {
                 "no-todo": noTodoRule
             },
@@ -56,10 +64,24 @@
             },
             pluginsConfig: {
                 "@textlint/markdown": true
-            }
+            },
+            ext: ".md",
+            filePath: "document.md"
         });
 
-        const editor = new EditorView({
+        // Plain text linter without plugins
+        const textLinter = createTextlintLinter({
+            rules: {
+                "no-todo": noTodoRule
+            },
+            rulesConfig: {
+                "no-todo": true
+            },
+            ext: ".txt",
+            filePath: "document.txt"
+        });
+
+        const markdownEditor = new EditorView({
             doc: `# Welcome to CodeMirror 6 with Textlint!
 
 This is a markdown document with textlint integration.
@@ -81,9 +103,33 @@ Here's some sample text. Add a TODO: comment to see it highlighted!
                 basicSetup,
                 markdown(),
                 lintGutter(),
-                textlintLinter
+                markdownLinter
             ],
-            parent: document.getElementById("editor")
+            parent: document.getElementById("markdown-editor")
+        });
+
+        const textEditor = new EditorView({
+            doc: `Welcome to Plain Text with Textlint!
+
+This is a plain text document with textlint integration.
+No markdown syntax is processed here.
+
+Try typing "TODO:" somewhere in this document to see the linter in action.
+
+Features:
+- Real-time linting with textlint
+- Plain text processing
+- No plugins required for basic text
+
+Example:
+Here's some sample text. Add a TODO: comment to see it highlighted!
+`,
+            extensions: [
+                basicSetup,
+                lintGutter(),
+                textLinter
+            ],
+            parent: document.getElementById("text-editor")
         });
     </script>
 </body>

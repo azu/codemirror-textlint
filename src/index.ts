@@ -12,6 +12,8 @@ export interface TextlintLinterOptions {
   pluginsConfig?: Record<string, any>;
   filterRules?: Record<string, TextlintFilterRuleReporter>;
   filterRulesConfig?: Record<string, any>;
+  ext?: string;
+  filePath?: string;
 }
 
 function convertSeverity(severity: TextlintRuleSeverityLevel): "error" | "warning" | "info" {
@@ -36,7 +38,9 @@ export function createTextlintLinter(options: TextlintLinterOptions = {}) {
     plugins = {}, 
     pluginsConfig = {},
     filterRules = {}, 
-    filterRulesConfig = {} 
+    filterRulesConfig = {},
+    ext = ".md",
+    filePath = "document.md"
   } = options;
 
   // Convert rules to kernel format
@@ -72,8 +76,8 @@ export function createTextlintLinter(options: TextlintLinterOptions = {}) {
     
     try {
       const result = await textlintKernel.lintText(content, {
-        ext: ".md",
-        filePath: "document.md",
+        ext: ext,
+        filePath: filePath,
         rules: kernelRules,
         filterRules: kernelFilterRules,
         plugins: kernelPlugins

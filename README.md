@@ -112,6 +112,27 @@ const textlintLinter = createTextlintLinter({
 });
 ```
 
+### Plain Text (Non-Markdown)
+
+For plain text files without markdown syntax, you can specify a different file extension:
+
+```typescript
+import { createTextlintLinter } from "codemirror-textlint";
+import noTodo from "textlint-rule-no-todo";
+
+const textlintLinter = createTextlintLinter({
+  rules: {
+    "no-todo": noTodo
+  },
+  rulesConfig: {
+    "no-todo": true
+  },
+  ext: ".txt",
+  filePath: "document.txt"
+  // Note: No plugins needed for plain text
+});
+```
+
 ## API
 
 ### `createTextlintLinter(options?: TextlintLinterOptions)`
@@ -126,6 +147,8 @@ Creates a CodeMirror 6 linter extension for textlint.
 - `pluginsConfig?: Record<string, any>` - Configuration for plugins
 - `filterRules?: Record<string, TextlintFilterRuleReporter>` - Filter rules to suppress certain messages
 - `filterRulesConfig?: Record<string, any>` - Configuration for filter rules
+- `ext?: string` - File extension for textlint processing (default: ".md")
+- `filePath?: string` - File path for textlint processing (default: "document.md")
 
 Returns a linter extension that can be added to CodeMirror 6's extensions array.
 ## Development
